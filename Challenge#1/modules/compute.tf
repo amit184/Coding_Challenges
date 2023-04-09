@@ -1,5 +1,5 @@
 resource "google_compute_http_health_check" "compute" {
-  name = "${var.bk_mig_name}-compute-hc"
+  name = "${var.mig_name}-compute-hc"
   request_path = "/"
   port = "${var.service_port}"
 }
@@ -9,7 +9,7 @@ resource "google_compute_instance_template" "compute" {
 
   machine_type = "${var.compute_machine_type}"
 
-  region = "${var.bk_region}"
+  region = "${var.region}"
 
   tags = [
     "allow-ssh",
@@ -17,7 +17,7 @@ resource "google_compute_instance_template" "compute" {
   ]
 
   network_interface {
-    subnetwork = "subnet-1"
+    subnetwork = "${var.subnetwork_name}"
     access_config {
     }
   }
@@ -30,15 +30,15 @@ resource "google_compute_instance_template" "compute" {
     disk_type = "pd-ssd"
   }
 
-#   service_account {
-#     email = "default"
-#     scopes = [
-#       "https://www.googleapis.com/auth/compute",
-#       "https://www.googleapis.com/auth/logging.write",
-#       "https://www.googleapis.com/auth/monitoring.write",
-#       "https://www.googleapis.com/auth/devstorage.full_control"
-#     ]
-#   }
+  service_account {
+    email = "default"
+    scopes = [
+      "https://www.googleapis.com/auth/compute",
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring.write",
+      "https://www.googleapis.com/auth/devstorage.full_control"
+    ]
+  }
 
 #   metadata {
 #     startup-script = "${file("${path.module}/scripts/compute.sh")}"
@@ -50,16 +50,16 @@ resource "google_compute_instance_template" "compute" {
 }
 
 resource "google_compute_instance_group_manager" "compute" {
-  name = "${var.bk_mig_name}-compute"
+  name = "${var.mig_name}-compute"
   description = "compute VM Instance Group"
 
-  base_instance_name = "${var.bk_mig_name}-compute"
+  base_instance_name = "${var.mig_name}-compute"
 
   version {
     instance_template  = google_compute_instance_template.compute.self_link
   }
 
-  zone = "${var.bk_zone1}"
+  zone = "${var.zone}"
 
 #   update_strategy = "RESTART"
 
@@ -73,7 +73,7 @@ resource "google_compute_instance_group_manager" "compute" {
 }
 
 resource "google_compute_target_pool" "compute" {
-  name = "${var.bk_mig_name}-target-pool"
+  name = "${var.mig_name}-target-pool"
   session_affinity = "NONE"
   health_checks = [
     "${google_compute_http_health_check.compute.name}",

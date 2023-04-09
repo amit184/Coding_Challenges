@@ -1,6 +1,6 @@
 resource "google_compute_firewall" "compute-ssh" {
-  name    = "${var.bk_mig_name}-vm-ssh"
-  network = "subnet-1"
+  name    = "${var.mig_name}-vm-ssh"
+  network = "${var.subnetwork_name}"
 
   allow {
     protocol = "tcp"
@@ -12,8 +12,8 @@ resource "google_compute_firewall" "compute-ssh" {
 }
 
 resource "google_compute_firewall" "compute-service" {
-  name    = "${var.bk_mig_name}-vm-service"
-  network = "subnet-1"
+  name    = "${var.mig_name}-vm-service"
+  network = "${var.subnetwork_name}"
 
   allow {
     protocol = "tcp"
@@ -25,7 +25,7 @@ resource "google_compute_firewall" "compute-service" {
 }
 
 resource "google_compute_forwarding_rule" "compute" {
-  name       = "${var.bk_mig_name}-compute-instance-group"
+  name       = "${var.mig_name}-compute-instance-group"
   target     = "${google_compute_target_pool.compute.self_link}"
   load_balancing_scheme = "EXTERNAL"
   port_range = "1-65535"
