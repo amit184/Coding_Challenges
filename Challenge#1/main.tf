@@ -1,3 +1,4 @@
+
 resource "google_compute_network" "vpc-main" {
   provider                = google-beta
   name                    = "app-private-network"
@@ -18,3 +19,4 @@ resource "google_compute_subnetwork" "vpc-subnet-2" {
   region        = "us-east4"
   network       = google_compute_network.vpc-main.id
 }
+

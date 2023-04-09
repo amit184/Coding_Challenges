@@ -3,13 +3,12 @@ terraform {
     google = "~>4.60.0"
   }
 }
-
-provider "google-beta" {
+provider "google" {
   project = "amit-project"
   region  = "us-central1"
 }
 
-provider "google" {
+provider "google-beta" {
   project = "amit-project"
   region  = "us-central1"
 }
