@@ -1,13 +1,13 @@
 resource "google_redis_instance" "main" {
   authorized_network      = google_compute_network.vpc-main.name
   connect_mode            = "DIRECT_PEERING"
-  location_id             = var.zone
+  location_id             = "southeast-asia1-a"
   memory_size_gb          = 1
   name                    = "${var.project_id}-cache"
   display_name            = "${var.project_id}-cache"
   project                 = var.project_id
   redis_version           = "REDIS_6_X"
-  region                  = var.region
+  region                  = "southeast-asia1"
   tier                    = "BASIC"
   transit_encryption_mode = "DISABLED"
 }
@@ -19,8 +19,8 @@ resource "random_id" "id" {
 resource "google_sql_database_instance" "main" {
   name             = "${var.project_id}-db-${random_id.id.hex}"
   database_version = "POSTGRES_14"
-  region           = var.region  #not fixed yet
-  project          = "${var.project_id}"
+  region           = "southeast-asia1"
+  project          = var.project_id
 
   settings {
     tier                  = "db-g1-small"
@@ -33,7 +33,7 @@ resource "google_sql_database_instance" "main" {
       private_network = "projects/${var.project_id}/global/networks/${google_compute_network.vpc-main.name}"
     }
     location_preference {
-      zone = var.zone  #not fixed yet
+      zone = "southeast-asia1-a"
     }
     database_flags {
       name  = "cloudsql.iam_authentication"
@@ -44,12 +44,11 @@ resource "google_sql_database_instance" "main" {
 
 }
 
-
 resource "google_sql_user" "main" {
-  project         = var.project_id
-  name            = "${google_service_account.runsa.account_id}@${var.project_id}.iam"
-  type            = "CLOUD_IAM_SERVICE_ACCOUNT"
-  instance        = google_sql_database_instance.main.name
+  project  = var.project_id
+  name     = "${google_service_account.runsa.account_id}@${var.project_id}.iam"
+  type     = "CLOUD_IAM_SERVICE_ACCOUNT"
+  instance = google_sql_database_instance.main.name
 }
 
 

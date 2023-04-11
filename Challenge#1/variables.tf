@@ -6,7 +6,7 @@ variable "project_id" {
 
 variable "service_apis" {
   description = "Services to be enable"
-  type = list(string)
+  type        = list(string)
   default = [
     "compute.googleapis.com",
     "cloudapis.googleapis.com",
