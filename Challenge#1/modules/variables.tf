@@ -38,4 +38,7 @@ variable service_port {
   default = "80"
 }
 
+variable "service_account" {
+  default = "default"
+}
 

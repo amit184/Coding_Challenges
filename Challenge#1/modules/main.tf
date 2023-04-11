@@ -31,7 +31,7 @@ resource "google_compute_instance_template" "compute" {
   }
 
   service_account {
-    email = "default"
+    email = "${var.service_account}"
     scopes = [
       "https://www.googleapis.com/auth/compute",
       "https://www.googleapis.com/auth/logging.write",

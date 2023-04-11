@@ -20,3 +20,9 @@ resource "google_compute_subnetwork" "vpc-subnet-2" {
   network       = google_compute_network.vpc-main.id
 }
 
+resource "google_project_service" "my-app" {
+  for_each = toset(var.service_apis)
+  project = var.project_id
+  service = each.key
+}
+
