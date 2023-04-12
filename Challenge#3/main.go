@@ -7,9 +7,10 @@ import (
 
 
 func main() {
-	//amit_Info := `{"birds":{"pigeon":"likes to perch on rocks","eagle":"bird of prey"},"animals":"none"}`
-	test_case := `{"a":{"b":{"c":"d"}}}`
-	getData(test_case, "b")
+	bird_Info := `{"birds":{"pigeon":"likes to perch on rocks","eagle":"bird of prey"},"animals":"none"}`
+	getData(bird_Info, "animals")
+	// test_case := `{"a":{"b":{"c":"d"}}}`
+	// getData(test_case, "a")
 }
 
 
@@ -17,9 +18,6 @@ func main() {
 	var details map[string]any
 	json.Unmarshal([]byte(object), &details)
 	fmt.Println(details)
-	result := details[keyString].(map[string]any)
-	for key, value := range result {
-		// Each value is an `any` type, that is type asserted as a string
-		fmt.Printf("%s : %s\n", key, value)
-	}
+	result := details[keyString]
+	fmt.Println(result)
  }
