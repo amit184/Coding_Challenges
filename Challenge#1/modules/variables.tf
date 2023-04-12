@@ -42,3 +42,7 @@ variable "service_account" {
   default = "default"
 }
 
+variable "lb_scheme" {
+  default = "EXTERNAL"
+}
+
