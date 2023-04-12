@@ -33,7 +33,7 @@ resource "google_compute_backend_service" "default" {
   load_balancing_scheme   = "${var.lb_scheme}"
   timeout_sec             = 10
   enable_cdn              = true
-  health_checks           = "${google_compute_http_health_check.compute.id}"
+  health_checks           = [google_compute_http_health_check.compute.id]
   backend {
     group           = "${google_compute_instance_group_manager.compute.instance_group}"
     balancing_mode  = "UTILIZATION"

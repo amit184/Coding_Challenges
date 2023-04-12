@@ -1,3 +1,9 @@
+variable "project_id" {
+  default     = "amit-project"
+  type        = string
+  description = "project ID"
+}
+
 variable region {
   description = "Region for managed instance group"
   default = "us-central1"
